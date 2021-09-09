@@ -5,10 +5,18 @@ package basep;
  */
 
 import java.awt.*;
+import java.util.Dictionary;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Stack;
+import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadPoolExecutor;
 
 import javax.swing.JTextField;
 
-class Task {
+class Task extends Thread {
 
     JTextField tf; // Textfield to be used by this task
 
@@ -77,6 +85,13 @@ public class TaskControl {
             TaskDisplay d = new TaskDisplay("Task Control", N);
 
             d.println("Type command (x to exit):");
+            HashMap<Integer, Thread> TaskStatus = new HashMap<Integer, Thread>();
+            TaskStatus.put(0, null);
+            TaskStatus.put(1, null);
+            TaskStatus.put(2, null);
+            TaskStatus.put(3, null);
+            TaskStatus.put(4, null);
+
 
             // Main command interpretation loop
             W: while (true) {
@@ -86,6 +101,12 @@ public class TaskControl {
                 switch (c) {
 
                 case 'x':
+                    for (Map.Entry<Integer, Thread> kv : TaskStatus.entrySet()){
+                        if (kv.getValue() != null && kv.getValue().isAlive()){
+                            d.println("Hov hov, tråd er i brug. venter lige..");
+                            kv.getValue().join();
+                        }
+                    }
                     break W;
 
                 case 'h':
@@ -93,8 +114,19 @@ public class TaskControl {
                     break;
 
                 case 't':
-                    d.println("Runs a task");
-                    new Task(d.tf[0]).run();
+
+                    for (Map.Entry<Integer, Thread> kv : TaskStatus.entrySet()){
+                        if (kv.getValue() == null || !kv.getValue().isAlive()){
+                            Thread t = new Thread(() -> new Task(d.tf[kv.getKey()]).run()) ;
+                            t.start();
+                            TaskStatus.put(kv.getKey(), t);
+                            d.println("Task "+kv.getKey().toString()+ " is ready. Task started.");
+                            continue W;
+                        }
+                    }
+                    d.println("Hov hov, alle tråde er brugt.");
+
+
                     break;
 
                 default:
