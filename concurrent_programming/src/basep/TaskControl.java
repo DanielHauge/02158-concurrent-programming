@@ -1,3 +1,4 @@
+package basep;
 
 /*
  * Concurrent Programming Lab 1 (Swing version)

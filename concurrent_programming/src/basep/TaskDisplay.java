@@ -1,3 +1,4 @@
+package basep;
 
 /* 
  * GUI for Concurrent Programmering Lab 1 (Swing version)
