@@ -5,10 +5,7 @@ package basep;
  */
 
 import java.awt.*;
-import java.util.Dictionary;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Stack;
+import java.util.*;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -55,14 +52,20 @@ class Task extends Thread {
 
         setMyText(s);
         while (s.length() < cols) {
-
+            if (Thread.interrupted()){
+                return;
+            }
             if (useCPU) {
                 for (int j = 0; j < 1000000 * delay; j++) {
+                    if (Thread.interrupted()){
+                        return;
+                    }
                 }
             } else {
                 try {
                     Thread.sleep(delay);
                 } catch (InterruptedException e) {
+                    return;
                 }
             }
 
@@ -77,6 +80,13 @@ public class TaskControl {
     static final int N = 6; // Number of Textfields
 
     static int h = 0; // Number of 'hello'-s
+    public static void stop(Thread[] ts, Integer i, TaskDisplay d){
+        Thread t = ts[i];
+        if (t != null){
+            t.interrupt();
+            d.println("Så stoppede threaden: " + i);
+        }
+    }
 
     public static void main(String[] argv) {
         try {
@@ -85,12 +95,8 @@ public class TaskControl {
             TaskDisplay d = new TaskDisplay("Task Control", N);
 
             d.println("Type command (x to exit):");
-            HashMap<Integer, Thread> TaskStatus = new HashMap<Integer, Thread>();
-            TaskStatus.put(0, null);
-            TaskStatus.put(1, null);
-            TaskStatus.put(2, null);
-            TaskStatus.put(3, null);
-            TaskStatus.put(4, null);
+            Thread[] ts = new Thread[5];
+
 
 
             // Main command interpretation loop
@@ -101,10 +107,11 @@ public class TaskControl {
                 switch (c) {
 
                 case 'x':
-                    for (Map.Entry<Integer, Thread> kv : TaskStatus.entrySet()){
-                        if (kv.getValue() != null && kv.getValue().isAlive()){
+                    for (int i = 0; i < ts.length; i++) {
+                        Thread t = ts[i];
+                        if (t != null && t.isAlive()){
                             d.println("Hov hov, tråd er i brug. venter lige..");
-                            kv.getValue().join();
+                            t.join();
                         }
                     }
                     break W;
@@ -114,13 +121,14 @@ public class TaskControl {
                     break;
 
                 case 't':
+                    for (int i = 0; i < ts.length; i++) {
+                        Thread t = ts[i];
+                        if (t == null || !t.isAlive()){
+                            Task task = new Task(d.tf[i]);
+                            ts[i] = new Thread(() -> task.run()) ;
+                            ts[i].start();
 
-                    for (Map.Entry<Integer, Thread> kv : TaskStatus.entrySet()){
-                        if (kv.getValue() == null || !kv.getValue().isAlive()){
-                            Thread t = new Thread(() -> new Task(d.tf[kv.getKey()]).run()) ;
-                            t.start();
-                            TaskStatus.put(kv.getKey(), t);
-                            d.println("Task "+kv.getKey().toString()+ " is ready. Task started.");
+                            d.println("Task "+i+ " is ready. Task started.");
                             continue W;
                         }
                     }
@@ -128,6 +136,22 @@ public class TaskControl {
 
 
                     break;
+                    case '1':
+                        stop(ts, 0, d);
+                        break;
+                    case '2':
+                        stop(ts, 1, d);
+                        break;
+                    case '3':
+                        stop(ts, 2, d);
+                        break;
+                    case '4':
+                        stop(ts, 3, d);
+                        break;
+                    case '5':
+                        stop(ts, 4, d);
+                        break;
+
 
                 default:
                     d.println("Don't know '" + c + "'");
