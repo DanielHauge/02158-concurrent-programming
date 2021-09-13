@@ -153,7 +153,10 @@ public class Search {
         try {
             long start;
             double time, totalTime = 0.0;
-            List<Double> allRuns = new ArrayList<Double>();
+            List<Double> singleRuns = new ArrayList<Double>();
+            List<Double> multiRuns = new ArrayList<Double>();
+
+
 
             /* Get and print program parameters */
             getArguments(argv);
@@ -187,7 +190,7 @@ public class Search {
 
                 System.out.print("\nSingle task: ");
                 writeRun(run);  writeResult(singleResult);  writeTime(time);
-                allRuns.add(time);
+                singleRuns.add(time);
             }
 
             double singleTime = totalTime / runs;
@@ -249,6 +252,7 @@ public class Search {
                 totalTime += time;
 
                 System.out.printf("\nUsing %2d tasks: ", ntasks);
+                multiRuns.add(time);
                 writeRun(run);  writeResult(result);  writeTime(time);
             }
 
@@ -269,7 +273,7 @@ public class Search {
              * Terminate engine after use
              *********************************************/
             engine.shutdown();
-            DataWriter.WriteDataToFile("data",allRuns);
+            DataWriter.WriteDataToFile("data",singleRuns,multiRuns);
         } catch (Exception e) {
             System.out.println("Search: " + e);
         }
