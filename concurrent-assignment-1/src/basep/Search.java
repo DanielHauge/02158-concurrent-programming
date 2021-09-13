@@ -153,6 +153,7 @@ public class Search {
         try {
             long start;
             double time, totalTime = 0.0;
+            List<Double> allRuns = new ArrayList<Double>();
 
             /* Get and print program parameters */
             getArguments(argv);
@@ -190,6 +191,7 @@ public class Search {
 
                 System.out.print("\nSingle task: ");
                 writeRun(run);  writeResult(singleResult);  writeTime(time);
+                allRuns.add(time);
             }
 
             double singleTime = totalTime / runs;
@@ -250,7 +252,7 @@ public class Search {
              * Terminate engine after use
              *********************************************/
             engine.shutdown();
-
+            DataWriter.WriteDataToFile("warmup",allRuns);
         } catch (Exception e) {
             System.out.println("Search: " + e);
         }
