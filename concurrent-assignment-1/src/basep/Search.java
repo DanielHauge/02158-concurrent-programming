@@ -166,19 +166,15 @@ public class Search {
             /**********************************************
              * Run search using a single task
              *********************************************/
+
             SearchTask singleSearch = new SearchTask(text, pattern, 0, len);
 
             List<Integer> singleResult = null;
 
-            /*
-             * Run a couple of times on engine for loading all classes and
-             * cache warm-up
-             */
             for (int i = 0; i < warmups; i++) {
                 engine.submit(singleSearch).get();
             }
 
-            /* Run for time measurement(s) and proper result */
             totalTime = 0.0;
 
             for (int run = 0; run < runs; run++) {
@@ -199,14 +195,25 @@ public class Search {
             writeTime(singleTime);  System.out.println();
 
 
+
             /**********************************************
              * Run search using multiple tasks
              *********************************************/
 
-/*+++++++++ Uncomment for Problem 2+
-
             // Create list of tasks
             List<SearchTask> taskList = new ArrayList<SearchTask>();
+            for (int i = 0; i <= ntasks; i++) {
+                int charsToAnalyse = len/ntasks;
+                int from = charsToAnalyse*i;
+                int to = charsToAnalyse*(i+1)+pattern.length-1;
+                if (i ==ntasks-1){
+                    to = len;
+                }
+                // System.out.println("Task: "+i+ " = "+from+" -> "+to);
+                SearchTask search = new SearchTask(text, pattern, from, to);
+                taskList.add(search);
+            }
+
             // Add tasks to list here
 
             List<Integer> result = null;
@@ -226,8 +233,17 @@ public class Search {
                 List<Future<List<Integer>>> futures = engine.invokeAll(taskList);
 
                 // Overall result is an ordered list of unique occurrence positions
-                result = new LinkedList<Integer>();
+                HashSet<Integer> hs = new HashSet<Integer>();
+
                 // Combine future results into an overall result
+                for (Future<List<Integer>> future : futures) {
+                    List<Integer> resultList = future.get();
+                    for (Integer occurenceStartIndex : resultList) {
+                        hs.add(occurenceStartIndex);
+                    }
+                }
+                result = new LinkedList<Integer>(hs);
+
 
                 time = (double) (System.nanoTime() - start) / 1e9;
                 totalTime += time;
@@ -240,19 +256,20 @@ public class Search {
             System.out.printf("\n\nUsing %2d tasks (avg.): ", ntasks);
             writeTime(multiTime);  System.out.println();
 
-
+            Collections.sort(result);
+            Collections.sort(singleResult);
             if (!singleResult.equals(result)) {
                 System.out.println("\nERROR: lists differ");
             }
+
             System.out.printf("\n\nAverage speedup: %1.2f\n\n", singleTime / multiTime);
 
-++++++++++*/
 
             /**********************************************
              * Terminate engine after use
              *********************************************/
             engine.shutdown();
-            DataWriter.WriteDataToFile("warmup",allRuns);
+            DataWriter.WriteDataToFile("data",allRuns);
         } catch (Exception e) {
             System.out.println("Search: " + e);
         }
