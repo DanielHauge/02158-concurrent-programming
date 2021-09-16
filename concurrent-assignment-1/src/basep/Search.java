@@ -164,7 +164,7 @@ public class Search {
                     fname, new String(pattern), ntasks, nthreads, warmups, runs);
 
             /* Setup execution engine */
-            ExecutorService engine = Executors.newSingleThreadExecutor();
+            ExecutorService engine = Executors.newCachedThreadPool();
 
             /**********************************************
              * Run search using a single task
@@ -235,6 +235,7 @@ public class Search {
                 // Submit tasks and await results
                 List<Future<List<Integer>>> futures = engine.invokeAll(taskList);
 
+
                 // Overall result is an ordered list of unique occurrence positions
                 HashSet<Integer> hs = new HashSet<Integer>();
 
@@ -245,10 +246,12 @@ public class Search {
                         hs.add(occurenceStartIndex);
                     }
                 }
-                result = new LinkedList<Integer>(hs);
-
 
                 time = (double) (System.nanoTime() - start) / 1e9;
+
+                result = new LinkedList<>(hs);
+
+
                 totalTime += time;
 
                 System.out.printf("\nUsing %2d tasks: ", ntasks);
@@ -273,7 +276,7 @@ public class Search {
              * Terminate engine after use
              *********************************************/
             engine.shutdown();
-            DataWriter.WriteDataToFile("data",singleRuns,multiRuns);
+            DataWriter.WriteDataToFile("multi-thread-task-8",singleRuns,multiRuns);
         } catch (Exception e) {
             System.out.println("Search: " + e);
         }

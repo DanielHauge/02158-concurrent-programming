@@ -30,7 +30,7 @@ public class DataWriter {
                 "set datafile separator ','\n" +
                 "set ylabel \"Seconds\" # label for the Y axis\n"+
                 "set xlabel 'Run' # label for the X axis\n"+
-                       "set key autotitle columnhead\n" +
+                "set key autotitle columnhead\n" +
                 "plot \""+runName+"1.csv\" using 1:2 with lines, '' using 1:3 with lines\n"+
                 "replot \""+runName+"2.csv\" using 1:2 with lines, '' using 1:3 with lines"
         );
