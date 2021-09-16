@@ -276,7 +276,7 @@ public class Search {
              * Terminate engine after use
              *********************************************/
             engine.shutdown();
-            DataWriter.WriteDataToFile("multi-thread-task-8",singleRuns,multiRuns);
+            DataWriter.WriteDataToFile(datafile,singleRuns,multiRuns);
         } catch (Exception e) {
             System.out.println("Search: " + e);
         }
