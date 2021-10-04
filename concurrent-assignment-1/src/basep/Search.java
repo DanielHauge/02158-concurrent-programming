@@ -205,7 +205,7 @@ public class Search {
 
             // Create list of tasks
             List<SearchTask> taskList = new ArrayList<SearchTask>();
-            for (int i = 0; i <= ntasks; i++) {
+            for (int i = 0; i < ntasks; i++) {
                 int charsToAnalyse = len/ntasks;
                 int from = charsToAnalyse*i;
                 int to = charsToAnalyse*(i+1)+pattern.length-1;
@@ -216,6 +216,9 @@ public class Search {
                 SearchTask search = new SearchTask(text, pattern, from, to);
                 taskList.add(search);
             }
+
+
+
 
             // Add tasks to list here
 
