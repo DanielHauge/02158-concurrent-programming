@@ -164,6 +164,7 @@ public class Search {
                     fname, new String(pattern), ntasks, nthreads, warmups, runs);
 
             /* Setup execution engine */
+            // ExecutorService engine = Executors.newFixedThreadPool(nthreads);
             ExecutorService engine = Executors.newCachedThreadPool();
 
             /**********************************************
@@ -263,7 +264,7 @@ public class Search {
             }
 
             double multiTime = totalTime / runs;
-            System.out.printf("\n\nUsing %2d tasks (avg.): ", ntasks);
+            System.out.printf("\n\nUsing %2d tasks - %2d threads (avg.): ", ntasks, nthreads);
             writeTime(multiTime);  System.out.println();
 
             Collections.sort(result);
