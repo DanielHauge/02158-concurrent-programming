@@ -164,8 +164,8 @@ public class Search {
                     fname, new String(pattern), ntasks, nthreads, warmups, runs);
 
             /* Setup execution engine */
-            // ExecutorService engine = Executors.newFixedThreadPool(nthreads);
-            ExecutorService engine = Executors.newCachedThreadPool();
+            ExecutorService engine = Executors.newFixedThreadPool(nthreads);
+            //ExecutorService engine = Executors.newCachedThreadPool();
 
             /**********************************************
              * Run search using a single task
