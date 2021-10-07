@@ -17,7 +17,8 @@ int incrit = 0; /* For easy statement of mutual exlusion */
  * an index in the flag arrays.
  */
 
-active [N] proctype P()
+
+active [N] proctype PU()
 {
     do
     ::    /* First statement is a dummy to allow a label at start */
