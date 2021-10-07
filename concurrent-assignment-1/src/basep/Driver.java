@@ -1,11 +1,35 @@
 package basep;
 
+import java.awt.*;
 import java.io.File;
 
 public class Driver {
     public static void main(String[] argv){
+
+        String word = "Denmark";
+        String Repeats = "10";
+        String WarmupRounds = "10";
+        String TxtFile = "/shakespear.txt";
+
+        RunWith("1", "10",word, Repeats, WarmupRounds, TxtFile);
+        RunWith( "1", "15",word, Repeats, WarmupRounds, TxtFile);
+        RunWith("1", "20",word, Repeats, WarmupRounds, TxtFile);
+
+        /*
+        RunWith("1", "1",word, Repeats, WarmupRounds, TxtFile);
+        RunWith( "1", "8",word, Repeats, WarmupRounds, TxtFile);
+        RunWith("2", "8",word, Repeats, WarmupRounds, TxtFile);
+        RunWith( "4", "4",word, Repeats, WarmupRounds, TxtFile);
+        RunWith( "8", "2",word, Repeats, WarmupRounds, TxtFile);
+        RunWith("8", "8",word, Repeats, WarmupRounds, TxtFile);
+        RunWith("20", "20",word, Repeats, WarmupRounds, TxtFile);
+
+         */
+    }
+
+    public static void RunWith(String threads, String tasks,String word, String Repeats, String WarmupRounds, String TxtFile ){
         String basePath = new File("").getAbsolutePath();
-        String[] args = new String[]{"-R", "10", "-W","10", "-d", "shakespear_20tasks-20threads",basePath+"/shakespear.txt","the", "20", "20"};
+        String[] args = new String[]{"-R", Repeats, "-W",WarmupRounds, "-d", "shakespear_"+tasks+"tasks-"+threads+"threads",basePath + TxtFile,word, tasks, threads};
         Search.main(args);
     }
 }
