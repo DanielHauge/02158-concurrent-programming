@@ -4,7 +4,7 @@
  *     Skeleton PROMELA model of mutual exlusion by coordinator
  */
 
-#define N 5
+#define N 4
 
 bool enter[N];  /* Request to enter flags */
 bool ok[N];     /* Entry granted flags    */
@@ -18,7 +18,7 @@ int incrit = 0; /* For easy statement of mutual exlusion */
  */
 
 
-active [N] proctype PU()
+active [N] proctype P()
 {
     do
     ::    /* First statement is a dummy to allow a label at start */
