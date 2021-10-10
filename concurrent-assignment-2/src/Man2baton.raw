@@ -1,0 +1,75 @@
+Depth=      10 States=       31 Transitions=       31 Memory=     2.195	
+Depth=      20 States=      605 Transitions=      861 Memory=     2.195	
+Depth=      30 States= 6.29e+003 Transitions= 1.16e+004 Memory=     2.586	
+Depth=      40 States= 3.1e+004 Transitions= 6.93e+004 Memory=     4.051	t=  0.041 R=  8e+005
+Depth=      50 States= 8.59e+004 Transitions= 2.09e+005 Memory=     7.078	t=  0.126 R=  7e+005
+Depth=      60 States= 1.74e+005 Transitions= 4.59e+005 Memory=    11.766	t=  0.276 R=  6e+005
+Depth=      70 States= 2.97e+005 Transitions= 8.24e+005 Memory=    18.309	t=  0.499 R=  6e+005
+Depth=      80 States= 4.81e+005 Transitions= 1.38e+006 Memory=    28.172	t=  0.845 R=  6e+005
+Depth=      90 States= 6.99e+005 Transitions= 2.03e+006 Memory=    39.207	t=   1.27 R=  6e+005
+Depth=     100 States= 9.01e+005 Transitions= 2.68e+006 Memory=    49.266	t=   1.69 R=  5e+005
+Depth=     106 States=   1e+006 Transitions=   3e+006 Memory=    54.148	t=   1.91 R=  5e+005
+Depth=     110 States= 1.06e+006 Transitions= 3.18e+006 Memory=    56.883	t=   2.03 R=  5e+005
+Depth=     120 States= 1.19e+006 Transitions= 3.63e+006 Memory=    63.719	t=   2.34 R=  5e+005
+Depth=     130 States= 1.31e+006 Transitions= 4.01e+006 Memory=    69.480	t=   2.61 R=  5e+005
+Depth=     140 States= 1.41e+006 Transitions= 4.38e+006 Memory=    74.559	t=   2.87 R=  5e+005
+Depth=     150 States= 1.48e+006 Transitions= 4.62e+006 Memory=    77.684	t=   3.04 R=  5e+005
+Depth=     160 States= 1.53e+006 Transitions= 4.81e+006 Memory=    80.223	t=   3.18 R=  5e+005
+Depth=     170 States= 1.57e+006 Transitions= 4.98e+006 Memory=    82.469	t=    3.3 R=  5e+005
+Depth=     180 States= 1.62e+006 Transitions= 5.16e+006 Memory=    84.813	t=   3.43 R=  5e+005
+Depth=     190 States= 1.68e+006 Transitions= 5.38e+006 Memory=    87.645	t=   3.59 R=  5e+005
+Depth=     200 States= 1.75e+006 Transitions= 5.67e+006 Memory=    91.160	t=   3.79 R=  5e+005
+Depth=     210 States= 1.82e+006 Transitions= 5.96e+006 Memory=    94.676	t=      4 R=  5e+005
+Depth=     220 States= 1.88e+006 Transitions= 6.25e+006 Memory=    97.801	t=   4.21 R=  4e+005
+Depth=     230 States= 1.93e+006 Transitions= 6.47e+006 Memory=   100.047	t=   4.36 R=  4e+005
+Depth=     240 States= 1.96e+006 Transitions= 6.65e+006 Memory=   101.805	t=   4.49 R=  4e+005
+Depth=     250 States= 1.98e+006 Transitions= 6.75e+006 Memory=   102.879	t=   4.57 R=  4e+005
+Depth=     260 States=   2e+006 Transitions= 6.83e+006 Memory=   103.563	t=   4.63 R=  4e+005
+Depth=     262 States=   2e+006 Transitions= 6.84e+006 Memory=   103.758	t=   4.63 R=  4e+005
+pan: resizing hashtable to -w21..  done
+Depth=     270 States=   2e+006 Transitions= 6.86e+006 Memory=   111.855	t=   4.84 R=  4e+005
+Depth=     280 States= 2.01e+006 Transitions= 6.87e+006 Memory=   111.953	t=   4.85 R=  4e+005
+Depth=     290 States= 2.01e+006 Transitions= 6.87e+006 Memory=   111.953	t=   4.85 R=  4e+005
+Depth=     300 States= 2.01e+006 Transitions= 6.87e+006 Memory=   111.953	t=   4.85 R=  4e+005
+Depth=     310 States= 2.01e+006 Transitions= 6.87e+006 Memory=   111.953	t=   4.85 R=  4e+005
+Depth=     320 States= 2.01e+006 Transitions= 6.87e+006 Memory=   111.953	t=   4.85 R=  4e+005
+Depth=     330 States= 2.01e+006 Transitions= 6.87e+006 Memory=   111.953	t=   4.85 R=  4e+005
+
+(Spin Version 6.0.0 -- 5 December 2010)
+	+ Using Breadth-First Search
+	+ Partial Order Reduction
+	+ Compression
+
+Full statespace search for:
+	never claim         	- (none specified)
+	assertion violations	+
+	cycle checks       	- (disabled by -DSAFETY)
+	invalid end states	+
+
+State-vector 56 byte, depth reached 337, errors: 0
+  2005501 states, stored
+	2.0055e+006 nominal states (stored-atomic)
+  4869514 states, matched
+  6875015 transitions (= stored+matched)
+        0 atomic steps
+hash conflicts:   6657433 (resolved)
+
+Stats on memory usage (in Megabytes):
+  137.707	equivalent memory usage for states (stored*(State-vector + overhead))
+  104.143	actual memory usage for states (compression: 75.63%)
+         	state-vector as stored = 38 byte + 16 byte overhead
+    8.000	memory used for hash table (-w21)
+  111.953	total actual memory usage
+
+nr of templates: [ globals chans procs ]
+collapse counts: [ 121 94 74 ]
+unreached in proctype PD
+	Man2baton.pml:86, state 66, "-end-"
+	(1 of 66 states)
+unreached in proctype PU
+	Man2baton.pml:106, state 66, "-end-"
+	(1 of 66 states)
+
+pan: elapsed time 4.85 seconds
+pan: rate 413249.74 states/second
+null
