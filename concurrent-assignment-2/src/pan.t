@@ -62,7 +62,7 @@ settable(void)
 	trans[1][21]	= settr(55,0,22,12,0,"assert((incritDown==0))", 1, 2, 0);
 	trans[1][22]	= settr(56,0,23,13,13,"incritUp = (incritUp-1)", 1, 2, 0);
 	trans[1][23]	= settr(57,0,24,14,14,"upTemp = up", 1, 2, 0);
-	trans[1][24]	= settr(58,0,25,15,15,"upTemp = (upTemp+1)", 0, 2, 0);
+	trans[1][24]	= settr(58,0,25,15,15,"upTemp = (upTemp-1)", 0, 2, 0);
 	trans[1][25]	= settr(59,0,29,16,16,"up = upTemp", 1, 2, 0);
 	T = trans[1][29] = settr(63,0,0,0,0,"IF", 0, 2, 0);
 	    T->nxt	= settr(63,0,26,0,0,"IF", 0, 2, 0);
@@ -113,7 +113,7 @@ settable(void)
 	trans[0][21]	= settr(20,0,22,29,0,"assert((incritUp==0))", 1, 2, 0);
 	trans[0][22]	= settr(21,0,23,30,30,"incritDown = (incritDown-1)", 1, 2, 0);
 	trans[0][23]	= settr(22,0,24,31,31,"downTemp = down", 1, 2, 0);
-	trans[0][24]	= settr(23,0,25,32,32,"downTemp = (downTemp+1)", 0, 2, 0);
+	trans[0][24]	= settr(23,0,25,32,32,"downTemp = (downTemp-1)", 0, 2, 0);
 	trans[0][25]	= settr(24,0,29,33,33,"down = downTemp", 1, 2, 0);
 	T = trans[0][29] = settr(28,0,0,0,0,"IF", 0, 2, 0);
 	    T->nxt	= settr(28,0,26,0,0,"IF", 0, 2, 0);
