@@ -32,19 +32,18 @@ active [NDown] proctype PD()
     ::    /* First statement is a dummy to allow a label at start */
         skip;
 
-entry:  // atomic{ (up == 0) -> down++; }
+entry:  /* atomic{ (up == 0) -> down++; } */
         P(eSem);
-            if 
-                :: (up != 0) -> 
-                    Inc(downWaiting)
-                    V(eSem);
-                    P(downSem);
-            fi; 
-            Inc(down);
-            skip;
-            if  :: downWaiting > 0 -> Decr(downWaiting); V(downSem);
-                :: skip -> V(eSem);
-            fi;
+        if :: (up > 0) -> 
+                Inc(downWaiting);
+                V(eSem);
+                P(downSem)
+        fi; 
+        Inc(down);
+        skip;
+        if  :: downWaiting > 0 -> Decr(downWaiting); V(downSem)
+            :: V(eSem)
+        fi;
         
 crit:    /* Critical section */
         incritDown++;
@@ -55,8 +54,8 @@ crit:    /* Critical section */
 exit:
         P(eSem);
         Decr(down);
-        if  :: down == 0 && upWaiting > 0 -> Decr(upWaiting); V(upSem); 
-            :: skip -> V(eSem);
+        if  :: down == 0 && upWaiting > 0 -> Decr(upWaiting); V(upSem) 
+            :: V(eSem)
         fi
     od;
 }
@@ -70,29 +69,29 @@ active [NUp] proctype PU()
 
 entry:  // atomic{ (down == 0) -> up++; }
         P(eSem);
-            if 
-                :: (down != 0) -> 
-                    Inc(upWaiting)
-                    V(eSem);
-                    P(upSem);
-            fi; 
-            Inc(up);
-            skip;
-            if  :: upWaiting > 0 -> Decr(upWaiting); V(upSem);
-                :: skip -> V(eSem);
-            fi;
+        if :: (down > 0) -> 
+                Inc(upWaiting);
+                V(eSem);
+                P(upSem)
+            :: skip
+        fi; 
+        Inc(up);
+        if  :: (upWaiting > 0) -> Decr(upWaiting); V(upSem)
+            :: V(eSem)
+        fi;
 
 crit:    /* Critical section: In alley */
 		incritUp++;
 		assert(incritUp <= NUp);
+        skip;
 		assert(incritDown == 0);
 		incritUp--;
 
 exit:   // atomic{ up--; }
 		P(eSem);
         Decr(up);
-        if  :: up == 0 && downWaiting > 0 -> Decr(downWaiting); V(downSem); 
-            :: skip -> V(eSem)
+        if  :: up == 0 && downWaiting > 0 -> Decr(downWaiting); V(downSem);
+            :: V(eSem)
         fi
     od;
 }
