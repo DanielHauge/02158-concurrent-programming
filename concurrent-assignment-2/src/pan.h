@@ -1,5 +1,5 @@
 #define SpinVersion	"Spin Version 6.0.0 -- 5 December 2010"
-#define PanSource	"assignment2-p3.pml"
+#define PanSource	"Man2multi.pml"
 
 #define G_long	4
 #define G_int	4
@@ -71,14 +71,14 @@ typedef struct S_F_MAP {
 #define nstates1	36	/* PU */
 #define endstate1	35
 short src_ln1 [] = {
-	  0,  60,  18,  18,  18,  18,  64,  18, 
-	 18,  18,  18,  64,  65,  65,  66,  67, 
-	 17,  17,  69,  72,  73,  74,  75,  78, 
-	 79,  80,  81,  17,  17,  81,  82,  82, 
-	 58,  84,  58,  84,   0, };
+	  0,  61,  18,  18,  18,  18,  65,  18, 
+	 18,  18,  18,  65,  66,  66,  67,  68, 
+	 17,  17,  70,  73,  74,  75,  76,  79, 
+	 80,  81,  82,  17,  17,  82,  83,  83, 
+	 59,  85,  59,  85,   0, };
 S_F_MAP src_file1 [] = {
 	{ ""-"", 0, 0 },
-	{ "assignment2-p3.pml", 1, 35 },
+	{ "Man2multi.pml", 1, 35 },
 	{ ""-"", 36, 37 }
 };
 uchar reached1 [] = {
@@ -94,12 +94,12 @@ uchar *loopstate1;
 short src_ln0 [] = {
 	  0,  30,  18,  18,  18,  18,  34,  18, 
 	 18,  18,  18,  34,  35,  35,  36,  37, 
-	 17,  17,  39,  42,  43,  44,  45,  47, 
-	 48,  49,  50,  17,  17,  50,  51,  51, 
-	 28,  53,  28,  53,   0, };
+	 17,  17,  39,  42,  43,  44,  45,  48, 
+	 49,  50,  51,  17,  17,  51,  52,  52, 
+	 28,  54,  28,  54,   0, };
 S_F_MAP src_file0 [] = {
 	{ ""-"", 0, 0 },
-	{ "assignment2-p3.pml", 1, 35 },
+	{ "Man2multi.pml", 1, 35 },
 	{ ""-"", 36, 37 }
 };
 uchar reached0 [] = {

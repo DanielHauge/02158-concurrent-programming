@@ -32,7 +32,7 @@ active [NDown] proctype PD()
 entry:
         P(downSem);
 		if :: down == 0 -> P(upSem) fi; 
-        downTemp = down;
+		downTemp = down;
 		downTemp = downTemp + 1;
 		down = downTemp;
 		V(downSem);
@@ -43,9 +43,10 @@ crit:    /* Critical section */
         assert(incritDown <= NDown);
 		assert(incritUp == 0);
         incritDown--;
+
 exit:
         downTemp = down;
-		downTemp = downTemp + 1;
+		downTemp = downTemp - 1;
 		down = downTemp;
 		if :: down == 0 -> V(upSem) fi;
 		skip
@@ -60,7 +61,7 @@ active [NUp] proctype PU()
         skip;
 
 entry:
-        P(upSem);
+		P(upSem);
 		if :: up == 0 -> P(downSem) fi;
 		upTemp = up;
 		upTemp = upTemp + 1;	
@@ -69,14 +70,14 @@ entry:
 		skip;
 
 crit:    /* Critical section */
-        incritUp++;
-        assert(incritUp <= NUp);
+		incritUp++;
+		assert(incritUp <= NUp);
 		assert(incritDown == 0);
-        incritUp--;
+		incritUp--;
 
 exit:
         upTemp = up;
-		upTemp = upTemp + 1;
+		upTemp = upTemp - 1;
 		up = upTemp;
 		if :: up == 0 -> V(downSem) fi;
 		skip
