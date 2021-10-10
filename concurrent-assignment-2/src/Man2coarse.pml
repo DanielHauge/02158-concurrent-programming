@@ -1,8 +1,11 @@
+/* DTU Course 02158 Concurrent Programming
+ *   Lab 2
+ *   spin5.pml
+ *     Skeleton PROMELA model of mutual exlusion by coordinator
+ */
+
 #define NUp 3
 #define NDown 4
-
-#define Inc(V) { temp = V; temp = temp + 1; V = temp; }
-#define Decr(V) { temp = V; temp = temp - 1; V = temp; }
 
 int incritUp = 0;
 int incritDown = 0;
@@ -10,42 +13,24 @@ int incritDown = 0;
 int up = 0;
 int down = 0;
 
-int eSem = 1;
-int upSem = 0;
-int downSem = 0;
-
-int upWaiting = 0;
-int downWaiting = 0;
-
-
-
 inline V(sem) {sem++;}
 inline P(sem) {atomic{ sem>0 ; sem--}}
 
-
-
-
+/*
+ * Below it is utilised that the first N process instances will get
+ * pids from 0 to (N-1).  Therefore, the pid can be directly used as
+ * an index in the flag arrays.
+ */
 active [NDown] proctype PD()
 {
-    int temp;
+	int downTemp;
 	do
     ::    /* First statement is a dummy to allow a label at start */
         skip;
 
-entry:  // atomic{ (up == 0) -> down++; }
-        P(eSem);
-            if 
-                :: (up != 0) -> 
-                    Inc(downWaiting)
-                    V(eSem);
-                    P(downSem);
-            fi; 
-            Inc(down);
-            skip;
-            if  :: downWaiting > 0 -> Decr(downWaiting); V(downSem);
-                :: skip -> V(eSem);
-            fi;
-        
+entry:
+        atomic{ (up == 0) -> down++; }
+
 crit:    /* Critical section */
         incritDown++;
         assert(incritDown <= NDown);
@@ -53,47 +38,28 @@ crit:    /* Critical section */
         incritDown--;
 
 exit:
-        P(eSem);
-        Decr(down);
-        if  :: down == 0 && upWaiting > 0 -> Decr(upWaiting); V(upSem); 
-            :: skip -> V(eSem);
-        fi
+        atomic{ down--; }
     od;
 }
 
 active [NUp] proctype PU()
 {
-    int temp;
+	int upTemp;
     do
     ::    /* First statement is a dummy to allow a label at start */
         skip;
 
-entry:  // atomic{ (down == 0) -> up++; }
-        P(eSem);
-            if 
-                :: (down != 0) -> 
-                    Inc(upWaiting)
-                    V(eSem);
-                    P(upSem);
-            fi; 
-            Inc(up);
-            skip;
-            if  :: upWaiting > 0 -> Decr(upWaiting); V(upSem);
-                :: skip -> V(eSem);
-            fi;
+entry:
+		atomic{ (down == 0) -> up++; }
 
-crit:    /* Critical section: In alley */
+crit:    /* Critical section */
 		incritUp++;
 		assert(incritUp <= NUp);
 		assert(incritDown == 0);
 		incritUp--;
 
-exit:   // atomic{ up--; }
-		P(eSem);
-        Decr(up);
-        if  :: up == 0 && downWaiting > 0 -> Decr(downWaiting); V(downSem); 
-            :: skip -> V(eSem)
-        fi
+exit:
+		atomic{ up--; }
     od;
 }
 
