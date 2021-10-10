@@ -20,9 +20,7 @@ int incrit = 0; /* For easy statement of mutual exlusion */
 
 active [N] proctype P()
 {
-    do
-    ::    /* First statement is a dummy to allow a label at start */
-        skip;
+    do  :: skip;
 
 entry:
         enter[_pid] = true;
@@ -35,8 +33,7 @@ crit:    /* Critical section */
 
 exit:
         ok[_pid] = false;
-        /* Your code here */
-
+        
         /* Non-critical setion (may or may not terminate) */
         do :: true -> break od
 

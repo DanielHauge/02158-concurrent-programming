@@ -2,7 +2,7 @@
 #define NUp 2
 #define NDown 3
 
-// Non-atomic increment and decrement
+// Macro's for Non-atomic increment and decrement of variable V. (Java increments/decrements are non-atomic)
 #define Inc(V) { temp = V; temp = temp + 1; V = temp; }
 #define Decr(V) { temp = V; temp = temp - 1; V = temp; }
 

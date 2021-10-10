@@ -1,26 +1,20 @@
-/* DTU Course 02158 Concurrent Programming
- *   Lab 2
- *   spin5.pml
- *     Skeleton PROMELA model of mutual exlusion by coordinator
- */
-
 #define NUp 3
 #define NDown 4
 
-int incritUp = 0;
-int incritDown = 0;
 
-int up = 0;
-int down = 0;
+// History varible for model control.
+byte incritUp = 0;
+byte incritDown = 0;
 
+// Control variable to allow multiple cars driving in the same direction and otherwise block.
+byte up = 0;
+byte down = 0;
+
+// Semaphore lock and unlock.
 inline V(sem) {sem++;}
-inline P(sem) {atomic{ sem>0 ; sem--}}
+inline P(sem) {atomic{ sem>0 -> sem--}}
 
-/*
- * Below it is utilised that the first N process instances will get
- * pids from 0 to (N-1).  Therefore, the pid can be directly used as
- * an index in the flag arrays.
- */
+// Car driving through the alley top to bottom.
 active [NDown] proctype PD()
 {
 	int downTemp;
@@ -31,7 +25,7 @@ active [NDown] proctype PD()
 entry:
         atomic{ (up == 0) -> down++; }
 
-crit:    /* Critical section */
+crit:   /* Critical section : Driving through the alley. */
         incritDown++;
         assert(incritDown <= NDown);
 		assert(incritUp == 0);
@@ -42,17 +36,16 @@ exit:
     od;
 }
 
+// Car driving through the alley bottom to top.
 active [NUp] proctype PU()
 {
 	int upTemp;
-    do
-    ::    /* First statement is a dummy to allow a label at start */
-        skip;
+    do  :: skip;
 
 entry:
 		atomic{ (down == 0) -> up++; }
 
-crit:    /* Critical section */
+crit:   /* Critical section : Driving through the alley. */
 		incritUp++;
 		assert(incritUp <= NUp);
 		assert(incritDown == 0);
@@ -62,6 +55,3 @@ exit:
 		atomic{ up--; }
     od;
 }
-
-
-/* ltl fair1 { [] ( (P[0]@entry) -> <>  (P[0]@crit) ) } */

@@ -1,34 +1,29 @@
-/* DTU Course 02158 Concurrent Programming
- *   Lab 2
- *   spin5.pml
- *     Skeleton PROMELA model of mutual exlusion by coordinator
- */
-
 #define NUp 3
 #define NDown 4
 
-int incritUp = 0;
-int incritDown = 0;
+
+// History varible for model control.
+byte incritUp = 0;
+byte incritDown = 0;
+
+// Control variable to allow multiple cars driving in the same direction and otherwise block.
+byte up = 0;
+byte down = 0;
+
+// Semaphore lock and unlock.
+inline V(sem) {sem++;}
+inline P(sem) {atomic{ sem>0 -> sem--}}
+
+// Semaphores locking the directions.
 int upSem = 1;
 int downSem = 1;
-int up = 0;
-int down = 0;
 
-inline V(sem) {sem++;}
-inline P(sem) {atomic{ sem>0 ; sem--}}
 
-/*
- * Below it is utilised that the first N process instances will get
- * pids from 0 to (N-1).  Therefore, the pid can be directly used as
- * an index in the flag arrays.
- */
+// Car driving through the alley top to bottom.
 active [NDown] proctype PD()
 {
 	int downTemp;
-	do
-    ::    /* First statement is a dummy to allow a label at start */
-        skip;
-
+	do  :: skip;
 entry:
         P(downSem);
 		if :: down == 0 -> P(upSem) fi; 
@@ -53,12 +48,11 @@ exit:
     od;
 }
 
+// Car driving through the alley bottom to top.
 active [NUp] proctype PU()
 {
 	int upTemp;
-    do
-    ::    /* First statement is a dummy to allow a label at start */
-        skip;
+    do 	::  skip;
 
 entry:
 		P(upSem);
@@ -84,5 +78,3 @@ exit:
     od;
 }
 
-
-/* ltl fair1 { [] ( (P[0]@entry) -> <>  (P[0]@crit) ) } */
