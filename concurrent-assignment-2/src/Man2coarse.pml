@@ -18,9 +18,7 @@ inline P(sem) {atomic{ sem>0 -> sem--}}
 active [NDown] proctype PD()
 {
 	int downTemp;
-	do
-    ::    /* First statement is a dummy to allow a label at start */
-        skip;
+	do  :: skip;
 
 entry:
         atomic{ (up == 0) -> down++; }

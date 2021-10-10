@@ -66,7 +66,7 @@ inline Exit(e, own, oppositeWait, oppositeSem) {
 }
 
 // Car driving through the alley top to bottom.
-proctype PD()
+proctype Pd()
 {
     int temp;
 	do  :: skip;
@@ -86,7 +86,7 @@ exit:   // atomic{ down--; }
 }
 
 // Car driving through the alley bottom to top.
-proctype PU()
+proctype Pu()
 {
     int temp;
     do  :: skip;
@@ -105,18 +105,29 @@ exit:   // atomic{ up--; }
     od;
 }
 
+
 pid up1, up2, down1, down2, down3;
 
 init {
     atomic {
-      up1 = run PU();
-      up2 = run PU();
-      down1 = run PD();
-      down2 = run PD();
-      down3 = run PD();
+      up1 = run Pu();
+      up2 = run Pu();
+      down1 = run Pd();
+      down2 = run Pd();
+      down3 = run Pd();
     }
 }
 
-// ltl obl { [] ( ((PD[down1]@entry) && [] !(PU[up1]@entry) ) -> <> (PD[down1]@crit) )}
-// ltl fair1 { [] ( (PU[up1]@entry) -> <>  (PU[up1]@crit) ) }
-// ltl res { [] ( (PU[up1]@entry || PU[up2]@entry || PD[down1]@entry || PD[down2]@entry || PD[down3]@entry) -> <> (PU[up1]@crit || PU[up2]@crit || PD[down1]@crit || PD[down2]@crit || PD[down3]@crit) )}
+
+// When up1 process will eventually make progress.  P -> Q = [](P => <> Q)
+// ltl fair1 { [] ( (Pu[up1]@entry) -> <>  (Pu[up1]@crit) ) } 
+
+// Process up1 cannot escape progressing forever.  Strong fairness: []<> (at a & B) ~> after a  : [] <> ([] @a -> <> after @a)
+// ltl strongFair { [] <> ([] ( (Pu[up1]@entry) -> <>  (Pu[up1]@crit) )) } 
+
+// A process on its own will make progress without delay. 
+// ltl obl { [] ( ((Pd[down1]@entry) && [] !(Pu[up1]@entry) ) -> <> (Pd[down1]@crit) )}
+
+// It should allways be the case that: atleast one of the processes will make progress.
+// ltl res1 { [] ( Pu[up1]@entry || Pu[up2]@entry || Pd[down1]@entry || Pd[down2]@entry || Pd[down3]@entry) -> <> (Pu[up1]@crit || Pu[up2]@crit || Pd[down1]@crit || Pd[down2]@crit || Pd[down3]@crit) )}
+// ltl res2 { [] ( (Pu[up1]@entry || Pu[up2]@entry) -> <> ( Pu[up1]@crit || Pu[up2]@crit ) && ( Pd[down1]@entry || Pd[down2]@entry || Pd[down3]@entry) -> <> ( Pd[down1]@crit || Pd[down2]@crit || Pd[down3]@crit) ) }

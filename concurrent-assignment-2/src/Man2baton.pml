@@ -104,6 +104,3 @@ exit:   // atomic{ up--; }
 		Exit(eSem, up, downWaiting, downSem);
     od;
 }
-
-
-/* ltl fair1 { [] ( (P[0]@entry) -> <>  (P[0]@crit) ) } */
