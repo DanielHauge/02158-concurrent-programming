@@ -126,8 +126,8 @@ init {
 // ltl strongFair { [] <> ([] ( (Pu[up1]@entry) -> <>  (Pu[up1]@crit) )) } 
 
 // A process on its own will make progress without delay. 
-// ltl obl { [] ( ((Pd[down1]@entry) && [] !(Pu[up1]@entry) ) -> <> (Pd[down1]@crit) )}
+// ltl obl { [] ( ((Pd[down1]@entry) && [] (!( Pu[up1]@crit || Pu[up2]@crit || Pd[down2]@crit || Pd[down3]@crit) ) ) -> <> (Pd[down1]@crit) )}
 
 // It should allways be the case that: atleast one of the processes will make progress.
-// ltl res1 { [] ( Pu[up1]@entry || Pu[up2]@entry || Pd[down1]@entry || Pd[down2]@entry || Pd[down3]@entry) -> <> (Pu[up1]@crit || Pu[up2]@crit || Pd[down1]@crit || Pd[down2]@crit || Pd[down3]@crit) )}
+// ltl res1 { [] (( Pu[up1]@entry || Pu[up2]@entry || Pd[down1]@entry || Pd[down2]@entry || Pd[down3]@entry) -> <> (Pu[up1]@crit || Pu[up2]@crit || Pd[down1]@crit || Pd[down2]@crit || Pd[down3]@crit) )}
 // ltl res2 { [] ( (Pu[up1]@entry || Pu[up2]@entry) -> <> ( Pu[up1]@crit || Pu[up2]@crit ) && ( Pd[down1]@entry || Pd[down2]@entry || Pd[down3]@entry) -> <> ( Pd[down1]@crit || Pd[down2]@crit || Pd[down3]@crit) ) }
