@@ -1,7 +1,6 @@
 #define NUp 3
 #define NDown 4
 
-
 // History varible for model control.
 byte incritUp = 0;
 byte incritDown = 0;

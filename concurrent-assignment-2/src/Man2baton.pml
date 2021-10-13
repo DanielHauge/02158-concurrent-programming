@@ -104,3 +104,5 @@ exit:   // atomic{ up--; }
 		Exit(eSem, up, downWaiting, downSem);
     od;
 }
+
+ltl split_propery{[](eSem + downSem + upSem <= 1)}

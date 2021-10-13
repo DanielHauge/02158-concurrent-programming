@@ -1,0 +1,11 @@
+never fair1 {    /* !([] ((! ((P[0]@entry))) || (<> ((P[0]@crit))))) */
+T0_init:
+	if
+	:: (! ((! ((P[0]@entry)))) && ! (((P[0]@crit)))) -> goto accept_S4
+	:: (1) -> goto T0_init
+	fi;
+accept_S4:
+	if
+	:: (! (((P[0]@crit)))) -> goto accept_S4
+	fi;
+}

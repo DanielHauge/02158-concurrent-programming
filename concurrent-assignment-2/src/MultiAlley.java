@@ -41,5 +41,4 @@ public class MultiAlley extends Alley {
             if (up == 0) downSem.V();    // enable down-going cars again
         }
     }
-
 }
