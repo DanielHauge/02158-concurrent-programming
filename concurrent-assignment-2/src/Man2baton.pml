@@ -105,4 +105,4 @@ exit:   // atomic{ up--; }
     od;
 }
 
-ltl split_propery{[](eSem + downSem + upSem <= 1)}
+ltl split_property{[](eSem + downSem + upSem <= 1)}
