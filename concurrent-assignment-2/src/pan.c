@@ -533,8 +533,8 @@ addproc(int n)
 		break;
 	case 1:	/* PU */
 		((P1 *)pptr(h))->_t = 1;
-		((P1 *)pptr(h))->_p = 32;
-		reached1[32]=1;
+		((P1 *)pptr(h))->_p = 34;
+		reached1[34]=1;
 		/* params: */
 		/* locals: */
 		((P1 *)pptr(h))->_2_upTemp = 0;
@@ -547,8 +547,8 @@ addproc(int n)
 		break;
 	case 0:	/* PD */
 		((P0 *)pptr(h))->_t = 0;
-		((P0 *)pptr(h))->_p = 32;
-		reached0[32]=1;
+		((P0 *)pptr(h))->_p = 34;
+		reached0[34]=1;
 		/* params: */
 		/* locals: */
 		((P0 *)pptr(h))->_1_downTemp = 0;
