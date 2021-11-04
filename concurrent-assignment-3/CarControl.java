@@ -30,6 +30,7 @@ class Conductor extends Thread {
     Pos curpos;                      // Current position 
     Pos newpos;                      // New position to go to
     boolean inAlley;
+    boolean inMove;
 
     public Conductor(int no, CarDisplayI cd, Gate g, Field field, Alley alley, Barrier barrier) {
 
@@ -94,6 +95,13 @@ class Conductor extends Thread {
         return pos.equals(barpos);
     }
 
+    void cleanUp(CarI car){
+        field.leave(curpos);
+        if (inMove)field.leave(newpos);
+        if (inAlley) alley.leave(no);
+        cd.deregister(car);
+    }
+
     public void run() {
         try {
             CarI car = cd.newCar(no, col, startpos);
@@ -115,25 +123,20 @@ class Conductor extends Thread {
                 if (atBarrier(curpos)) barrier.sync(no); // Barrier is always off for problem 5, so there will never be an interupt here.
                 
                 if (atEntry(curpos)) try { alley.enter(no); inAlley = true; } catch (InterruptedException e){
-                    field.leave(curpos);
-                    cd.deregister(car);
+                    cleanUp(car);
                     return;
                 }
 
-                try {field.enter(no, newpos);} catch (InterruptedException e){
-                    field.leave(curpos);
-                    if (inAlley) alley.leave(no);
-                    cd.deregister(car);
+                try {field.enter(no, newpos); inMove = true; } catch (InterruptedException e){
+                    cleanUp(car);
                     return;
                 }
 
                 try{ car.driveTo(newpos);} catch (InterruptedException e){
-                    field.leave(curpos);
-                    field.leave(newpos);
-                    if (inAlley) alley.leave(no);
-                    cd.deregister(car);
+                    cleanUp(car);
                     return;
                 }
+                inMove = false;
 
                 field.leave(curpos);
                 if (atExit(newpos)) {

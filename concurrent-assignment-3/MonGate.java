@@ -24,3 +24,4 @@ public class MonGate extends Gate {
     public synchronized void close() {
         isopen = false;
     }
+}
