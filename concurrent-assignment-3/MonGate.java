@@ -1,19 +1,28 @@
 //Monitor implementation of Gate (skeleton)
-//Mandatory assignment 3
+//CP Lab 3
 //Course 02158 Concurrent Programming, DTU, Fall 2021
 
-//Hans Henrik Lovengreen     Oct 28, 2021
+//Hans Henrik Lovengreen     Oct 25, 2021
 
 
 public class MonGate extends Gate {
 
-    public void pass() throws InterruptedException {
+    private boolean isopen = false;
+
+
+    public synchronized void pass() throws InterruptedException {
+        while (!isopen){
+            wait();
+        }
     }
 
-    public void open() {
+    public synchronized void open() {
+        isopen = true;
+        notifyAll();
     }
 
-    public void close() {
+    public synchronized void close() {
+        isopen = false;
     }
 
 }
