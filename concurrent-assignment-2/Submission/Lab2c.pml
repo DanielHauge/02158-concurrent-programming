@@ -46,7 +46,7 @@ active proctype Coordinator()
     do
     ::
         i = i % N;
-        if ::     enter[i] -> atomic{ok[i] = true; enter[i] = false;}
+        if ::     enter[i] -> enter[i] = false; ok[i] = true;
                     ok[i] == false ->
         fi;
         i = i+1
