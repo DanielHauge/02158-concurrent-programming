@@ -35,7 +35,7 @@ exit:
         ok[_pid] = false;
         
         /* Non-critical setion (may or may not terminate) */
-        do :: true -> break od
+        do :: true -> skip :: break od
 
     od;
 }
