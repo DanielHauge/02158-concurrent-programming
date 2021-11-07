@@ -97,10 +97,11 @@ class Conductor extends Thread {
 
     void cleanUp(CarI car){
         field.leave(curpos);
-        if (inMove)field.leave(newpos);
+        if (inMove) field.leave(newpos);
         if (inAlley) alley.leave(no);
         cd.deregister(car);
     }
+    
 
     public void run() {
         try {
@@ -113,8 +114,11 @@ class Conductor extends Thread {
 
             while (true) { 
 
-                if (atGate(curpos)) { 
-                    mygate.pass(); // The barrier is always off for problem 5, so there will never be an interupt here.
+                if (atGate(curpos)) {
+                    try {mygate.pass();} catch (InterruptedException e) { 
+                        cleanUp(car);
+                        return;
+                    } 
                     car.setSpeed(chooseSpeed());
                 }
 
@@ -203,25 +207,24 @@ public class CarControl implements CarControlI{
     
     public void removeCar(int no) { 
         Conductor c = conductor[no];
-        if (c != null){
-            c.interrupt();
-            try {c.join(1000, 0); } catch (Exception e){
-                c.cd.println(e.getMessage());
-            } finally {
-                conductor[no] = null;
-            }
-            
+        if (c == null) return;
+        c.interrupt();
+        try {c.join(); } catch (Exception e){
+            c.cd.println(e.getMessage());
+        } finally {
+            conductor[no] = null;
         }
+        
     }
 
     public void restoreCar(int no) { 
         Conductor c = conductor[no];
-        if (c == null){
-            // gate[no] = Gate.create(); // Gate is reused as it is not used for problem 5.
-            conductor[no] = new Conductor(no,cd,gate[no],field,alley,barrier);
-            conductor[no].setName("Conductor-" + no);
-            conductor[no].start();
-        }
+        if (c != null) return;
+        // gate[no] = Gate.create(); // Gate is reused as it is not used for problem 5.
+        conductor[no] = new Conductor(no,cd,gate[no],field,alley,barrier);
+        conductor[no].setName("Conductor-" + no);
+        conductor[no].start();
+        
     }
 
     /* Speed settings for testing purposes */
