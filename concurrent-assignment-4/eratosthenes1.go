@@ -12,10 +12,8 @@ const N = 5
 
 func odds(out chan<- int) {
 	// Fill in
-	for i := 2; i < 10*N; i++ {
-		if i%2 != 0 {
-			out <- i
-		}
+	for i := 3; i < 10*N; i += 2 {
+		out <- i
 	}
 	fmt.Println(2)
 	close(out)
